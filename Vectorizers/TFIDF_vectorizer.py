@@ -36,21 +36,31 @@ class TFIDVectorizer:
 
     def fit_transform(self, data=None):
         # Pre process the Head lines
-        tqdm.pandas(desc="pre processing headline")
-        data["headline"] = data["headline"].progress_apply(lambda x: self.preprocess_text(x))
 
-        # pre process the short description
-        tqdm.pandas(desc="pre processing short description")
-        data["short_description"] = data["short_description"].progress_apply(lambda x: self.preprocess_text(x))
+        data['news'] = data[['headline', 'short_description']].agg(' '.join, axis=1)
 
-        # Combine the headline and short description
-        data["news"] = data["headline"] + data["short_description"]
+        tqdm.pandas(desc="pre processing news articles")
+        data["news"] = data["news"].progress_apply(lambda x: self.preprocess_text(x))
+
+        # # pre process the short description
+        # tqdm.pandas(desc="pre processing short description")
+        # data["short_description"] = data["short_description"].progress_apply(lambda x: self.preprocess_text(x))
+        #
+        # # Combine the headline and short description
+        # data["news"] = data["headline"] + data["short_description"]
+        # Filter articles whose have more than 5 words per article
+        data['words_length'] = data.news.apply(lambda i: len(i.split(" ")))
+        data = data[data.words_length >= 5]
+        data = data[data['category'].map(data['category'].value_counts()) > 3000]
+
+        data.category = data.category.map(lambda x: "WORLDPOST" if x == "THE WORLDPOST" else x)
 
         # Get vector representation of news articles using TfidfVectorizer
         # Chosen vector length on basis of Term frequency analysis
         # and we consider uni-grams and bi-grams for the vector-representation.
-
         X = self.vectorizer.fit_transform(data.news)
+
+
         y = data.category.values
         return X, y
 
