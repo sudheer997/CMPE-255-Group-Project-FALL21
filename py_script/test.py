@@ -5,10 +5,16 @@ Created on Fri Nov 26 17:03:31 2021
 @author: Checkout
 """
 import pandas as  pd
-import Vectorizers
+import Vectorizers.TFIDF_vectorizer as vecrorizer_class
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn import svm
+import pickle
+from sklearn.svm import LinearSVC
+from sklearn.metrics import classification_report
+from sklearn.metrics import accuracy_score
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.multiclass import OneVsOneClassifier
 if __name__=="__main__":
         data_file= "./data/News_Category_Dataset_v2.json"
         category = []
@@ -29,7 +35,7 @@ if __name__=="__main__":
         
         vector_length=150000
         
-        vectorizer=Vectorizers.TFIDF_vectorizer.TFIDVectorizer
+        vectorizer=vecrorizer_class.TFIDVectorizer
         print("************* Preprocessing the data started *****************")
         text_vectorizer = vectorizer(vector_length=vector_length)
         X, y = text_vectorizer.fit_transform(data=formatted_data)
@@ -43,11 +49,44 @@ if __name__=="__main__":
         X_train, X_test, y_train,y_test = train_test_split(X,y,stratify=y,test_size=0.33,random_state=45,shuffle=True)
         print("************* model training started *****************")
         #model = LogisticRegression()
-        model = svm.SVC(verbose=True)
+        
+        
+        
+        #model = svm.SVC(kernel="linear",verbose=True)
+        model=LinearSVC(random_state=0,tol=1e-5)
         model.fit(X_train, y_train)
         print("************* model training stopped *****************")
+        path="./models/SVC_tfidf.pkl"
+        import pickle
+        with open(path, 'wb') as f:
+            pickle.dump(model, f)
+            
+        # make predictions on test set
+        y_pred = model.predict(X_test)
+
+        # compute and print accuracy score
+        print('Model accuracy score with default hyperparameters: {0:0.4f}'.format(accuracy_score(y_test, y_pred)))
         
+        clf = DecisionTreeClassifier(random_state=0)
+        clf.fit(X_train, y_train)
         
+        path="./models/dt_tfidf.pkl"
+        #import pickle
+        with open(path, 'wb') as f:
+            pickle.dump(clf, f)
+        y_pred = clf.predict(X_test)
+
+        # compute and print accuracy score
+        print('Model accuracy score with default hyperparameters: {0:0.4f}'.format(accuracy_score(y_test, y_pred)))
+        
+        ovo = OneVsOneClassifier(model)
+        # fit model
+        ovo.fit(X_train, y_train)
+        # make predictions
+        y_pred = ovo.predict(X_test)
+
+        # compute and print accuracy score
+        print('Model accuracy score with default hyperparameters: {0:0.4f}'.format(accuracy_score(y_test, y_pred)))
         
         
         
