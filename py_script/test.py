@@ -43,8 +43,8 @@ if __name__=="__main__":
         X_train, X_test, y_train,y_test = train_test_split(X,y,stratify=y,test_size=0.33,random_state=45,shuffle=True)
         print("************* model training started *****************")
         #model = LogisticRegression()
-        model = svm.SVC()
-        model.fit(X_train, y_train,verbose=True)
+        model = svm.SVC(verbose=True)
+        model.fit(X_train, y_train)
         print("************* model training stopped *****************")
         
         
