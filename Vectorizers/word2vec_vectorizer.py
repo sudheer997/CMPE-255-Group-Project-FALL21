@@ -53,7 +53,7 @@ class Word2Vec_vectorizer:
         data.words_length.describe()
 
         # Build word2Vec model
-        self.model = Word2Vec(data.processed_text, min_count=1, size=300)
+        self.model = Word2Vec(data.processed_text, min_count=1, vector_size=300)
 
         tqdm.pandas(desc="Converting text to vector using Word2Vec")
         data["sentence_vector"] = data["processed_text"].progress_apply(lambda sentence: self.word2_vec_vectorizer(

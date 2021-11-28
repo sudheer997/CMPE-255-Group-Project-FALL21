@@ -93,3 +93,31 @@ if __name__ == "__main__":
                                                  model_path_location="../models",
                                                  model_name="decision_tree_word2vec.pkl")
     model_lr.get_model_performance()
+
+#                 precision    recall  f1-score   support
+#
+#   BLACK VOICES       0.14      0.14      0.14       895
+#       BUSINESS       0.22      0.23      0.23      1135
+#         COMEDY       0.17      0.17      0.17       972
+#          CRIME       0.34      0.33      0.33       670
+#        DIVORCE       0.31      0.32      0.31       685
+#  ENTERTAINMENT       0.40      0.40      0.40      3129
+#   FOOD & DRINK       0.45      0.46      0.46      1242
+# HEALTHY LIVING       0.15      0.15      0.15      1212
+#  HOME & LIVING       0.32      0.33      0.32       837
+#         IMPACT       0.08      0.08      0.08       676
+#      PARENTING       0.30      0.30      0.30      1735
+#        PARENTS       0.14      0.14      0.14       771
+#       POLITICS       0.67      0.66      0.67      6466
+#   QUEER VOICES       0.27      0.27      0.27      1242
+#         SPORTS       0.24      0.24      0.24       951
+# STYLE & BEAUTY       0.54      0.54      0.54      1928
+#         TRAVEL       0.44      0.46      0.45      1939
+#       WEDDINGS       0.40      0.41      0.40       730
+#       WELLNESS       0.46      0.45      0.45      3565
+#          WOMEN       0.12      0.11      0.12       666
+#      WORLDPOST       0.28      0.29      0.29       733
+#
+#       accuracy                           0.40     32179
+#      macro avg       0.31      0.31      0.31     32179
+#   weighted avg       0.40      0.40      0.40     32179
