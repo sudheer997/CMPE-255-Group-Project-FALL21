@@ -43,9 +43,9 @@ def main():
         sentence=nd
         vectorized_sentence = text_vectorizer.transform(sentence=sentence)
         y_pred = clf.predict(vectorized_sentence)
-        label_encoder.inverse_transform(y_pred)[0]
+        str_label=label_encoder.inverse_transform(y_pred)[0]
 
-        return redirect(url_for("user", usr=nd))
+        return render_template("label.html", nd=nd,label=str_label)
     else:
         return render_template("main.html")
 
