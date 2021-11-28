@@ -11,11 +11,11 @@ Classification of news articles based on headlines and short descriptions.
 |6. logistic Regression + tfidf              | 0.62|
 |7. Linear SVC + word2vec                    | 0.63|
 |8. Linear SVC + tfidf                       | 0.72|
-|9. K Neigbhors + word2vec                   | |
+|9. K Neigbhors + word2vec                   | 0.59|
 |10. K Neighbhors + tfidf                    | 0.58|
-|11. Decision Tree + word2vec                | |
+|11. Decision Tree + word2vec                | 0.40|
 |12. Decision Tree + tfidf                   | 0.52|
-|13. Bagging + word2vec                      | |
+|13. Bagging + word2vec                      | 0.53|
 |14. Bagging + tfidf                         | 0.58|
 
 
