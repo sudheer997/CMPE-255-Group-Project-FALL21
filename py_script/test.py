@@ -40,10 +40,20 @@ if __name__=="__main__":
         text_vectorizer = vectorizer(vector_length=vector_length)
         X, y = text_vectorizer.fit_transform(data=formatted_data)
         print("************* Preprocessing the data Ended *****************")
+        path="./models/text_vectorizer_tfidf.pkl"
+        #import pickle
+        with open(path, 'wb') as f:
+            pickle.dump(text_vectorizer, f)
         
         label_encoder = LabelEncoder()
-        
+        path="./models/label_encoder.pkl"
+        label_encoder.fit(y)
+        label_encoder.classes_
         y = label_encoder.fit_transform(y)
+        label_encoder.fit(y)
+        
+        with open(path, 'wb') as f:
+            pickle.dump(label_encoder, f)
         
         
         X_train, X_test, y_train,y_test = train_test_split(X,y,stratify=y,test_size=0.33,random_state=45,shuffle=True)
@@ -57,7 +67,7 @@ if __name__=="__main__":
         model.fit(X_train, y_train)
         print("************* model training stopped *****************")
         path="./models/SVC_tfidf.pkl"
-        import pickle
+        #import pickle
         with open(path, 'wb') as f:
             pickle.dump(model, f)
             
@@ -87,7 +97,11 @@ if __name__=="__main__":
 
         # compute and print accuracy score
         print('Model accuracy score with default hyperparameters: {0:0.4f}'.format(accuracy_score(y_test, y_pred)))
-        
+        sentence="Record of Natural Disaster"
+        vectorized_sentence = text_vectorizer.transform(sentence=sentence)
+        y_pred = model.predict(vectorized_sentence)
+        label_encoder.inverse_transform(y_pred)[0]
+        LabelEncoder.classes__
         
         
         
