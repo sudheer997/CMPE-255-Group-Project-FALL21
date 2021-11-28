@@ -1,7 +1,7 @@
 # 255-Group-Project-FALL21-
 Classification of news articles based on headlines and short descriptions.
 
-|Classification + word2vec|Accuracy Result|Classification + tfidf|Accuracy Result|
+|Classification + tfidf|Accuracy Result|Classification + word2vec|Accuracy Result|
 |---|---|---|---|
 |1. Random Forest + tfidf                    | 0.64|6. logistic Regression + word2vec           | 0.70|
 |2. Naive Bayesian + tfidf                   | 0.67|7. Linear SVC + word2vec                    | 0.63|
