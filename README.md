@@ -1,21 +1,12 @@
 # 255-Group-Project-FALL21-
 Classification of news articles based on headlines and short descriptions.
 
-|Classifications|Accuracy Result|
-|---|---|
-|1. Random Forest + word2vec                 | |
-|2. Random Forest + tfidf                    | 0.64|
-|3. Naive Bayesian + word2vec                | |
-|4. Naive Bayesian + tfidf                   | 0.67|
-|5. logistic Regression + word2vec           | 0.70|
-|6. logistic Regression + tfidf              | 0.62|
-|7. Linear SVC + word2vec                    | 0.63|
-|8. Linear SVC + tfidf                       | 0.72|
-|9. K Neigbhors + word2vec                   | 0.59|
-|10. K Neighbhors + tfidf                    | 0.58|
-|11. Decision Tree + word2vec                | 0.40|
-|12. Decision Tree + tfidf                   | 0.52|
-|13. Bagging + word2vec                      | 0.53|
-|14. Bagging + tfidf                         | 0.58|
+|Classification + word2vec|Accuracy Result|Classification + tfidf|Accuracy Result|
+|---|---|---|---|
+|1. Random Forest + tfidf                    | 0.64|6. logistic Regression + word2vec           | 0.70|
+|2. Naive Bayesian + tfidf                   | 0.67|7. Linear SVC + word2vec                    | 0.63|
+|3. logistic Regression + tfidf              | 0.62|8. K Neigbhors + word2vec                   | 0.59|
+|4. Linear SVC + tfidf                       | 0.72|||
+|5. K Neighbhors + tfidf                    | 0.58|||
 
 
