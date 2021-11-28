@@ -15,7 +15,7 @@ Classification of news articles based on headlines and short descriptions.
 |10. K Neighbhors + tfidf                    | 0.58|
 |11. Decision Tree + word2vec                | |
 |12. Decision Tree + tfidf                   | 0.52|
-|13. Bagging + word2vec                      | 0.58|
-|14. Bagging + tfidf                         | |
+|13. Bagging + word2vec                      | |
+|14. Bagging + tfidf                         | 0.58|
 
 
