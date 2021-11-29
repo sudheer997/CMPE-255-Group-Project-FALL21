@@ -1,30 +1,31 @@
 import os
 import pickle
 from abc import ABC
-from copy import deepcopy, copy
+from copy import copy
 
-import Vectorizers
-
-from classifiers.classifier import Classifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import train_test_split
+import numpy as np
 from sklearn.metrics import classification_report
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+import Vectorizers
+from Vectorizers.word2vec_vectorizer import Word2Vec_vectorizer
+from classifiers.classifier import Classifier
+from sklearn.ensemble import RandomForestClassifier
 import time
 
-class LogisticRegressionModel(Classifier, ABC):
+class randomforestModel(Classifier, ABC):
     def __init__(self, X, y, text_vectorizer,
                  save_model=True,
                  model_path_location="../models",
-                 model_name="logistic_regression_tfidf.pkl"):
+                 model_name="randomforest_word2vec.pkl"):
         super().__init__()
         self.X = X
         self.label_encoder = LabelEncoder()
         self.y = self.label_encoder.fit_transform(y)
         self.vectorizer = text_vectorizer
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, self.y,
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y,
                                                                                 stratify=y,
-                                                                                test_size=0.33,
+                                                                                test_size=0.20,
                                                                                 random_state=45,
                                                                                 shuffle=True)
         self.model = self.train(save_model)
@@ -33,10 +34,9 @@ class LogisticRegressionModel(Classifier, ABC):
 
     @classmethod
     def load_data(cls, data_file,
-                  vectorizer=Vectorizers.TFIDF_vectorizer.TFIDVectorizer,
+                  vectorizer=None,
                   vector_length=150000,
                   **kwargs):
-
         formatted_data = cls.read_file(data_file)
         print("************* Preprocessing the data started *****************")
         # measure data pre processing time
@@ -49,7 +49,7 @@ class LogisticRegressionModel(Classifier, ABC):
 
     def train(self, save_model):
         print("************* model training started *****************")
-        model = LogisticRegression()
+        model = RandomForestClassifier()
         model.fit(self.X_train, self.y_train)
         print("************* model training stopped *****************")
         return model
@@ -79,11 +79,11 @@ class LogisticRegressionModel(Classifier, ABC):
                 text_classifier = pickle.load(f)
             return text_classifier
         else:
-            return LogisticRegressionModel.load_data("../data/News_Category_Dataset_v2.json",
+            return randomforestModel.load_data("../data/News_Category_Dataset_v2.json",
                                                      vectorizer=Vectorizers.TFIDF_vectorizer.TFIDVectorizer,
                                                      vector_length=160000, save_model=True,
                                                      model_path_location="../models",
-                                                     model_name="logistic_regression_tfidf.pkl")
+                                                     model_name="randomforest_word2vec.pkl")
 
     def get_model_performance(self):
         y_pred = self.model.predict(self.X_test)
@@ -93,41 +93,42 @@ class LogisticRegressionModel(Classifier, ABC):
 if __name__ == "__main__":
     # measure running time
     start = time.time()
-    model_lr = LogisticRegressionModel.load_data("../data/News_Category_Dataset_v2.json",
-                                                 vectorizer=Vectorizers.TFIDF_vectorizer.TFIDVectorizer,
+    model_lr = randomforestModel.load_data("../data/News_Category_Dataset_v2.json",
+                                                 vectorizer=Word2Vec_vectorizer,
                                                  vector_length=160000, save_model=True,
                                                  model_path_location="../models",
-                                                 model_name="logistic_regression_tfidf.pkl")
+                                                 model_name="randomforest_word2vec.pkl")
     model_lr.get_model_performance()
     print("All Complete Sec time :", time.time() - start)
 
-# Pre processing Complete Sec time : 740.432126045227
-# All Complete Sec time : 1021.5989029407501
-#               precision    recall  f1-score   support
+# Pre processing Complete Sec time : 417.91098070144653
+# All Complete Sec time : 1562.4113137722015
+
+#                 precision    recall  f1-score   support
 #
-#            0       0.66      0.34      0.45      1477
-#            1       0.65      0.49      0.56      1872
-#            2       0.70      0.39      0.50      1603
-#            3       0.69      0.55      0.61      1107
-#            4       0.86      0.68      0.76      1130
-#            5       0.65      0.81      0.72      5162
-#            6       0.76      0.77      0.77      2050
-#            7       0.57      0.15      0.24      2000
-#            8       0.84      0.71      0.77      1381
-#            9       0.63      0.26      0.37      1115
-#           10       0.55      0.68      0.61      2863
-#           11       0.62      0.17      0.27      1272
-#           12       0.75      0.91      0.82     10668
-#           13       0.85      0.64      0.73      2049
-#           14       0.78      0.69      0.73      1569
-#           15       0.80      0.82      0.81      3182
-#           16       0.76      0.81      0.78      3200
-#           17       0.83      0.74      0.79      1205
-#           18       0.58      0.85      0.69      5882
-#           19       0.49      0.30      0.37      1099
-#           20       0.81      0.52      0.64      1209
+#   BLACK VOICES       0.64      0.12      0.21       895
+#       BUSINESS       0.54      0.28      0.37      1135
+#         COMEDY       0.61      0.16      0.26       972
+#          CRIME       0.57      0.54      0.56       670
+#        DIVORCE       0.71      0.47      0.56       685
+#  ENTERTAINMENT       0.49      0.75      0.59      3129
+#   FOOD & DRINK       0.66      0.68      0.67      1242
+# HEALTHY LIVING       0.56      0.06      0.11      1212
+#  HOME & LIVING       0.71      0.44      0.55       837
+#         IMPACT       0.48      0.08      0.14       676
+#      PARENTING       0.44      0.59      0.51      1735
+#        PARENTS       0.53      0.09      0.16       771
+#       POLITICS       0.67      0.89      0.77      6466
+#   QUEER VOICES       0.69      0.37      0.48      1242
+#         SPORTS       0.70      0.33      0.45       951
+# STYLE & BEAUTY       0.74      0.73      0.74      1928
+#         TRAVEL       0.59      0.73      0.65      1939
+#       WEDDINGS       0.82      0.53      0.64       730
+#       WELLNESS       0.50      0.80      0.62      3565
+#          WOMEN       0.48      0.16      0.24       666
+#      WORLDPOST       0.72      0.34      0.47       733
 #
-#     accuracy                           0.70     53095
-#    macro avg       0.71      0.59      0.62     53095
-# weighted avg       0.70      0.70      0.68     53095
+#       accuracy                           0.59     32179
+#      macro avg       0.61      0.44      0.46     32179
+#   weighted avg       0.60      0.59      0.55     32179
 #
