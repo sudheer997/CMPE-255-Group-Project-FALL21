@@ -10,6 +10,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from sklearn.svm import LinearSVC
+import time
 
 
 class linearSVCModel(Classifier, ABC):
@@ -39,8 +40,11 @@ class linearSVCModel(Classifier, ABC):
 
         formatted_data = cls.read_file(data_file)
         print("************* Preprocessing the data started *****************")
+        # measure data pre processing time
+        start = time.time()
         text_vectorizer = vectorizer(vector_length=vector_length)
         X, y = text_vectorizer.fit_transform(data=formatted_data)
+        print("Pre processing Complete Sec time :", time.time() - start)
         print("************* Preprocessing the data Ended *****************")
         return cls(X, y, text_vectorizer, **kwargs)
 
@@ -88,13 +92,18 @@ class linearSVCModel(Classifier, ABC):
 
 
 if __name__ == "__main__":
+    # measure running time
+    start = time.time()
     model_lr = linearSVCModel.load_data("../data/News_Category_Dataset_v2.json",
                                                  vectorizer=Vectorizers.TFIDF_vectorizer.TFIDVectorizer,
                                                  vector_length=160000, save_model=True,
                                                  model_path_location="../models",
                                                  model_name="linear_SVC_tfidf.pkl")
     model_lr.get_model_performance()
+    print("All Complete Sec time :", time.time() - start)
 
+# Pre processing Complete Sec time : 160.08014798164368
+# All Complete Sec time : 180.0960397720337
 #               precision    recall  f1-score   support
 #
 #            0       0.62      0.46      0.53      1477

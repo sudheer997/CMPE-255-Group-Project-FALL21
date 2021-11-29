@@ -10,7 +10,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from sklearn.naive_bayes import MultinomialNB
-
+import time
 
 class naivebayesianModel(Classifier, ABC):
     def __init__(self, X, y, text_vectorizer,
@@ -39,9 +39,12 @@ class naivebayesianModel(Classifier, ABC):
 
         formatted_data = cls.read_file(data_file)
         print("************* Preprocessing the data started *****************")
+        # measure data pre processing time
+        start = time.time()
         text_vectorizer = vectorizer(vector_length=vector_length)
         X, y = text_vectorizer.fit_transform(data=formatted_data)
         print("************* Preprocessing the data Ended *****************")
+        print("Pre processing Complete Sec time :", time.time() - start)
         return cls(X, y, text_vectorizer, **kwargs)
 
     def train(self, save_model):
@@ -88,13 +91,17 @@ class naivebayesianModel(Classifier, ABC):
 
 
 if __name__ == "__main__":
+    # measure running time
+    start = time.time()
     model_lr = naivebayesianModel.load_data("../data/News_Category_Dataset_v2.json",
                                                  vectorizer=Vectorizers.TFIDF_vectorizer.TFIDVectorizer,
                                                  vector_length=160000, save_model=True,
                                                  model_path_location="../models",
                                                  model_name="naivebayesian_tfidf.pkl")
     model_lr.get_model_performance()
-
+    print("All Complete Sec time :", time.time() - start)
+# Pre processing Complete Sec time : 705.7252631187439
+# All Complete Sec time : 760.0805487632751
 #               precision    recall  f1-score   support
 #
 #            0       0.71      0.25      0.37      1477

@@ -11,6 +11,7 @@ import Vectorizers
 from Vectorizers.word2vec_vectorizer import Word2Vec_vectorizer
 from classifiers.classifier import Classifier
 from sklearn.svm import LinearSVC
+import time
 
 class linearSVCModel(Classifier, ABC):
     def __init__(self, X, y, text_vectorizer,
@@ -38,9 +39,12 @@ class linearSVCModel(Classifier, ABC):
                   **kwargs):
         formatted_data = cls.read_file(data_file)
         print("************* Preprocessing the data started *****************")
+        # measure data pre processing time
+        start = time.time()
         text_vectorizer = vectorizer(vector_length=vector_length)
         X, y = text_vectorizer.fit_transform(data=formatted_data)
         print("************* Preprocessing the data Ended *****************")
+        print("Pre processing Complete Sec time :", time.time() - start)
         return cls(X, y, text_vectorizer, **kwargs)
 
     def train(self, save_model):
@@ -87,13 +91,18 @@ class linearSVCModel(Classifier, ABC):
 
 
 if __name__ == "__main__":
+    # measure running time
+    start = time.time()
     model_lr = linearSVCModel.load_data("../data/News_Category_Dataset_v2.json",
                                                  vectorizer=Word2Vec_vectorizer,
                                                  vector_length=160000, save_model=True,
                                                  model_path_location="../models",
                                                  model_name="linear_SVC_word2vec.pkl")
     model_lr.get_model_performance()
+    print("All Complete Sec time :", time.time() - start)
 
+# Pre processing Complete Sec time : 380.60236501693726
+# All Complete Sec time : 3844.7406260967255
 #                 precision    recall  f1-score   support
 #
 #   BLACK VOICES       0.59      0.19      0.29       895

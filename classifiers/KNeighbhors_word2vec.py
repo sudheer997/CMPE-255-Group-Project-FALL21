@@ -10,13 +10,14 @@ from sklearn.preprocessing import LabelEncoder
 import Vectorizers
 from Vectorizers.word2vec_vectorizer import Word2Vec_vectorizer
 from classifiers.classifier import Classifier
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+import time
 
-class randomforestModel(Classifier, ABC):
+class KNeighbhorsModel(Classifier, ABC):
     def __init__(self, X, y, text_vectorizer,
                  save_model=True,
                  model_path_location="../models",
-                 model_name="randomforest_word2vec.pkl"):
+                 model_name="KNeighbhors_word2vec.pkl"):
         super().__init__()
         self.X = X
         self.label_encoder = LabelEncoder()
@@ -38,14 +39,17 @@ class randomforestModel(Classifier, ABC):
                   **kwargs):
         formatted_data = cls.read_file(data_file)
         print("************* Preprocessing the data started *****************")
+        # measure data pre processing time
+        start = time.time()
         text_vectorizer = vectorizer(vector_length=vector_length)
         X, y = text_vectorizer.fit_transform(data=formatted_data)
         print("************* Preprocessing the data Ended *****************")
+        print("Pre processing Complete Sec time :", time.time() - start)
         return cls(X, y, text_vectorizer, **kwargs)
 
     def train(self, save_model):
         print("************* model training started *****************")
-        model = RandomForestClassifier()
+        model = KNeighborsClassifier()
         model.fit(self.X_train, self.y_train)
         print("************* model training stopped *****************")
         return model
@@ -75,11 +79,11 @@ class randomforestModel(Classifier, ABC):
                 text_classifier = pickle.load(f)
             return text_classifier
         else:
-            return randomforestModel.load_data("../data/News_Category_Dataset_v2.json",
+            return KNeighbhorsModel.load_data("../data/News_Category_Dataset_v2.json",
                                                      vectorizer=Vectorizers.TFIDF_vectorizer.TFIDVectorizer,
                                                      vector_length=160000, save_model=True,
                                                      model_path_location="../models",
-                                                     model_name="randomforest_word2vec.pkl")
+                                                     model_name="KNeighbhors_word2vec.pkl")
 
     def get_model_performance(self):
         y_pred = self.model.predict(self.X_test)
@@ -87,13 +91,18 @@ class randomforestModel(Classifier, ABC):
 
 
 if __name__ == "__main__":
-    model_lr = randomforestModel.load_data("../data/News_Category_Dataset_v2.json",
+    # measure running time
+    start = time.time()
+    model_lr = KNeighbhorsModel.load_data("../data/News_Category_Dataset_v2.json",
                                                  vectorizer=Word2Vec_vectorizer,
                                                  vector_length=160000, save_model=True,
                                                  model_path_location="../models",
-                                                 model_name="randomforest_word2vec.pkl")
+                                                 model_name="KNeighbhors_word2vec.pkl")
     model_lr.get_model_performance()
+    print("All Complete Sec time :", time.time() - start)
 
+# Pre processing Complete Sec time : 225.0184109210968
+# All Complete Sec time : 770.126317024231
 #                 precision    recall  f1-score   support
 #
 #   BLACK VOICES       0.66      0.13      0.22       895

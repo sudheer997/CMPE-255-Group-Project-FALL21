@@ -10,7 +10,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
-
+import time
 
 class LogisticRegressionModel(Classifier, ABC):
     def __init__(self, X, y, text_vectorizer,
@@ -39,9 +39,12 @@ class LogisticRegressionModel(Classifier, ABC):
 
         formatted_data = cls.read_file(data_file)
         print("************* Preprocessing the data started *****************")
+        # measure data pre processing time
+        start = time.time()
         text_vectorizer = vectorizer(vector_length=vector_length)
         X, y = text_vectorizer.fit_transform(data=formatted_data)
         print("************* Preprocessing the data Ended *****************")
+        print("Pre processing Complete Sec time :", time.time() - start)
         return cls(X, y, text_vectorizer, **kwargs)
 
     def train(self, save_model):
@@ -88,14 +91,18 @@ class LogisticRegressionModel(Classifier, ABC):
 
 
 if __name__ == "__main__":
+    # measure running time
+    start = time.time()
     model_lr = LogisticRegressionModel.load_data("../data/News_Category_Dataset_v2.json",
                                                  vectorizer=Vectorizers.TFIDF_vectorizer.TFIDVectorizer,
                                                  vector_length=160000, save_model=True,
                                                  model_path_location="../models",
                                                  model_name="logistic_regression_tfidf.pkl")
     model_lr.get_model_performance()
+    print("All Complete Sec time :", time.time() - start)
 
-
+# Pre processing Complete Sec time : 740.432126045227
+# All Complete Sec time : 1021.5989029407501
 #               precision    recall  f1-score   support
 #
 #            0       0.66      0.34      0.45      1477

@@ -10,7 +10,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from sklearn.ensemble import RandomForestClassifier
-
+import time
 
 class randomforestModel(Classifier, ABC):
     def __init__(self, X, y, text_vectorizer,
@@ -39,9 +39,12 @@ class randomforestModel(Classifier, ABC):
 
         formatted_data = cls.read_file(data_file)
         print("************* Preprocessing the data started *****************")
+        # measure data pre processing time
+        start = time.time()
         text_vectorizer = vectorizer(vector_length=vector_length)
         X, y = text_vectorizer.fit_transform(data=formatted_data)
         print("************* Preprocessing the data Ended *****************")
+        print("Pre processing Complete Sec time :", time.time() - start)
         return cls(X, y, text_vectorizer, **kwargs)
 
     def train(self, save_model):
@@ -88,36 +91,41 @@ class randomforestModel(Classifier, ABC):
 
 
 if __name__ == "__main__":
+    # measure running time
+    start = time.time()
     model_lr = randomforestModel.load_data("../data/News_Category_Dataset_v2.json",
                                                  vectorizer=Vectorizers.TFIDF_vectorizer.TFIDVectorizer,
                                                  vector_length=160000, save_model=True,
                                                  model_path_location="../models",
                                                  model_name="randomforest_tfidf.pkl")
     model_lr.get_model_performance()
+    print("All Complete Sec time :", time.time() - start)
 
-  # precision    recall  f1-score   support
-  #
-  #          0       0.62      0.22      0.33      1477
-  #          1       0.62      0.33      0.43      1872
-  #          2       0.76      0.30      0.43      1603
-  #          3       0.61      0.49      0.54      1107
-  #          4       0.88      0.63      0.73      1130
-  #          5       0.54      0.76      0.63      5162
-  #          6       0.67      0.77      0.72      2050
-  #          7       0.57      0.16      0.25      2000
-  #          8       0.75      0.62      0.68      1381
-  #          9       0.75      0.08      0.15      1115
-  #         10       0.53      0.60      0.56      2863
-  #         11       0.51      0.18      0.26      1272
-  #         12       0.66      0.92      0.77     10668
-  #         13       0.86      0.59      0.70      2049
-  #         14       0.73      0.58      0.65      1569
-  #         15       0.77      0.78      0.77      3182
-  #         16       0.71      0.69      0.70      3200
-  #         17       0.83      0.73      0.78      1205
-  #         18       0.55      0.80      0.65      5882
-  #         19       0.51      0.20      0.28      1099
-  #         20       0.83      0.27      0.40      1209
-  #
-  #   accuracy                           0.64     53095
-  #  macro avg       0.68      0.51      0.54     53095
+# Pre processing Complete Sec time : 730.4670300483704
+# All Complete Sec time : 4183.145526170731
+# precision    recall  f1-score   support
+#
+#          0       0.62      0.22      0.33      1477
+#          1       0.62      0.33      0.43      1872
+#          2       0.76      0.30      0.43      1603
+#          3       0.61      0.49      0.54      1107
+#          4       0.88      0.63      0.73      1130
+#          5       0.54      0.76      0.63      5162
+#          6       0.67      0.77      0.72      2050
+#          7       0.57      0.16      0.25      2000
+#          8       0.75      0.62      0.68      1381
+#          9       0.75      0.08      0.15      1115
+#         10       0.53      0.60      0.56      2863
+#         11       0.51      0.18      0.26      1272
+#         12       0.66      0.92      0.77     10668
+#         13       0.86      0.59      0.70      2049
+#         14       0.73      0.58      0.65      1569
+#         15       0.77      0.78      0.77      3182
+#         16       0.71      0.69      0.70      3200
+#         17       0.83      0.73      0.78      1205
+#         18       0.55      0.80      0.65      5882
+#         19       0.51      0.20      0.28      1099
+#         20       0.83      0.27      0.40      1209
+#
+#   accuracy                           0.64     53095
+#  macro avg       0.68      0.51      0.54     53095
