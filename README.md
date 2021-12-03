@@ -61,6 +61,9 @@ Classification of news articles based on headlines and short descriptions.
 
 
 ## To host Flask Jinja web-app:
-- Run flask_app.py from command line
+- Run flask_app.py from command line with current working directory as project root directory
+```
+python web_app/flask_app.py
+```
 - Hosted app will be on http://localhost:5000/main port.
 
