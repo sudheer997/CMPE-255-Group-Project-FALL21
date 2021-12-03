@@ -1,0 +1,32 @@
+package used:
+tqdm
+nltk:
+	stopwords
+	PortersStemmer
+	word_tokenize
+
+sklearn.feature_extraction.text 
+-TfidVectorizer
+
+Parameters for TfidVectorizer 1,2
+Preprocess
+- Lower
+- integer
+
+Remove stop words and word has length less than 3
+
+agg function
+
+
+Approach
+
+aggregate <- Headline+short description
+Preprocess the aggregate value
+split it by space
+removed data points with word length <5
+Remove categories from dataset which contains less than 3000 data points
+Combine category WORLDPOST and THE WORLDPOST
+Use vectorizer and then give labels
+
+import nltk
+nltk.download('punkt')
