@@ -60,3 +60,7 @@ Classification of news articles based on headlines and short descriptions.
 |5. K Neighbhors                    | 0.58|346||
 
 
+## To host Flask Jinja web-app:
+- Run flask_app.py from command line
+- Hosted app will be on http://localhost:5000/main port.
+
