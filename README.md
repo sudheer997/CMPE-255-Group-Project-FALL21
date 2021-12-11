@@ -59,6 +59,11 @@ Classification of news articles based on headlines and short descriptions.
 |4. Linear SVC                      | 0.72|180|9. Random Forest                   |0.59|1562|
 |5. K Neighbhors                    | 0.58|346||
 
+## Classification using LSTM network:
+- We have created an LSTM network using Tensorflow to classify the news articles.
+- We have used Tensorflow word embeddings to vectorize the data. 
+- To run this deep learning model, you have to open the 'LSTM.ipnb' from the classifiers directory. We initially trained the model on the Google Colab but you can run the file on any machine which has Jupyter notebook installed.
+- The accuracy achieved by this model is 0.7247 
 
 ## To host Flask Jinja web-app:
 - Run flask_app.py from command line with current working directory as project root directory
